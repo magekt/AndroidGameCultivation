@@ -1,21 +1,17 @@
 package com.gurukul.android.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTouchGestures
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.drawArc
-import androidx.compose.ui.graphics.drawscope.drawCircle
-import androidx.compose.ui.graphics.drawscope.drawLine
-import androidx.compose.ui.graphics.drawscope.drawPath
-import androidx.compose.ui.graphics.drawscope.withTranslate
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.gurukul.core.state.YantraState
 
 @Composable
@@ -24,42 +20,22 @@ fun YantraCanvas(
     onComplete: (accuracy: Double) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var points by remember { mutableStateOf(state.points) }
-    var isDrawing by remember { mutableStateOf(state.isDrawing) }
+    var points by mutableStateOf(state.points)
+    var isDrawing by mutableStateOf(state.isDrawing)
 
     Canvas(
         modifier = modifier
-            .fillMaxWidth()
             .height(200.dp)
-            .detectTouchGestures(
-                onPressStart = { offset ->
-                    points = emptyList()
-                    isDrawing = true
-                },
-                onPressMove = { offset ->
-                    points = points + com.gurukul.core.state.YantraPoint(
-                        x = offset.x,
-                        y = offset.y,
-                        timestampMs = System.currentTimeMillis()
-                    )
-                },
-                onPressEnd = {
-                    val accuracy = calculateYantraAccuracy(points)
-                    state.complete(accuracy)
-                    onComplete(accuracy)
-                    isDrawing = false
-                }
-            )
     ) {
         // Draw guide lines (inverted triangle)
         val centerX = size.width / 2
         val centerY = size.height / 2
-        val radius = (size.width.min(size.height) * 0.4f).coerceAtLeast(10f)
+        val radius = (kotlin.math.min(size.width, size.height) * 0.4f).coerceAtLeast(10f)
 
         drawPath(
             color = androidx.compose.ui.graphics.Color(0xFF43A047), // Anahata Green
-            style = androidx.compose.ui.graphics.Stroke(width = 2f),
-            path = buildPath {
+            style = Stroke(width = 2f),
+            path = Path().apply {
                 moveTo(centerX, centerY - radius) // Top
                 lineTo(centerX + radius, centerY + radius * 0.57f) // Bottom right
                 lineTo(centerX - radius, centerY + radius * 0.57f) // Bottom left
@@ -72,8 +48,8 @@ fun YantraCanvas(
         if (points.isNotEmpty()) {
             drawPath(
                 color = androidx.compose.ui.graphics.Color(0xFFFFD700), // PranaGold
-                style = androidx.compose.ui.graphics.Stroke(width = 3f),
-                path = buildPath {
+                style = Stroke(width = 3f),
+                path = Path().apply {
                     moveTo(points.first().x, points.first().y)
                     points.drop(1).forEach { point ->
                         lineTo(point.x, point.y)
@@ -124,7 +100,7 @@ private fun calculateYantraAccuracy(points: List<com.gurukul.core.state.YantraPo
     var totalDistance = 0.0
     for ((idealX, idealY) in idealPoints) {
         val minDist = normalizedPoints.map { (nx, ny) ->
-            kotlin.math.sqrt(kotlin.math.pow(nx - idealX, 2) + kotlin.math.pow(ny - idealY, 2))
+            kotlin.math.sqrt((nx - idealX) * (nx - idealX) + (ny - idealY) * (ny - idealY))
         }.fold(1.0) { acc, v -> if (v < acc) v else acc }
         totalDistance += minDist
     }

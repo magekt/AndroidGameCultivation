@@ -1,19 +1,9 @@
 package com.gurukul.android.ui
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,39 +18,38 @@ import com.gurukul.core.model.Shishya
 import com.gurukul.core.state.BreakthroughResult
 import com.gurukul.core.state.SadhanaState
 import com.gurukul.core.state.SadhanaStateMachine
+import com.gurukul.core.state.YantraState
 
 @Composable
 fun GurukulScreen() {
     val context = LocalContext.current
     val repository = remember(context) { ShishyaRepository(context) }
 
-    var shishya by remember {
-        mutableStateOf(
-            repository.load() ?: Shishya(
-                id = "shishya-1",
-                name = "Arjun",
-                samskara = Samskara.SATTVA,
-                gift = Gift.YOGA,
-                path = Path.YOGA,
-                chakraLevel = 1,
-                sattva = 50,
-                karma = 0,
-                prana = 0,
-                inMoksha = false
-            )
+    var shishya by mutableStateOf(
+        repository.load() ?: Shishya(
+            id = "shishya-1",
+            name = "Arjun",
+            samskara = Samskara.SATTVA,
+            gift = Gift.YOGA,
+            path = Path.YOGA,
+            chakraLevel = 1,
+            sattva = 50,
+            karma = 0,
+            prana = 0,
+            inMoksha = false
         )
-    }
-    var yantraState by remember { mutableStateOf(YantraState()) }
-    var sadhanaState by remember { mutableStateOf(SadhanaState.RECRUIT) }
-    var streakDays by remember { mutableStateOf(0) }
+    )
+    var yantraState by mutableStateOf(YantraState())
+    var sadhanaState by mutableStateOf(SadhanaState.RECRUIT)
+    var streakDays by mutableStateOf(0)
 
     // Auto-save on shishya changes
     LaunchedEffect(shishya) {
         repository.save(shishya)
     }
 
-    val pranaProgress by remember { shishya.prana.toFloat() / 100f }
-    val sattvaProgress by remember { shishya.sattva.toFloat() / 100f }
+    val pranaProgress = remember { shishya.prana.toFloat() / 100f }
+    val sattvaProgress = remember { shishya.sattva.toFloat() / 100f }
 
     Column(
         modifier = Modifier
@@ -82,7 +71,7 @@ fun GurukulScreen() {
 
         // Status cards
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
         ) {
             StatCard("Prana", "${shishya.prana}%", shishya.prana.toFloat() / 100f)
@@ -125,14 +114,14 @@ fun GurukulScreen() {
                         } else {
                             sadhanaState = SadhanaState.TRAIN
                         }
-                        yantraState = yantraState.complete(result.success)
+                        yantraState = yantraState.complete(accuracy)
                     }
                 )
             }
             SadhanaState.BREAKTHROUGH_READY -> {
                 Text("Breakthrough achieved! Choose your path:")
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxSize(),
                     horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
                 ) {
                     PathChoiceButton(
@@ -173,6 +162,9 @@ fun GurukulScreen() {
                     Text("Recruit New Shishya")
                 }
             }
+            else -> {
+                Text("Unknown state")
+            }
         }
     }
 }
@@ -180,7 +172,7 @@ fun GurukulScreen() {
 @Composable
 fun StatCard(label: String, value: String, progress: Float = 0f) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(80.dp)
+        modifier = Modifier.fillMaxSize().height(80.dp)
     ) {
         androidx.compose.foundation.layout.Column(
             modifier = Modifier.fillMaxSize().padding(8.dp),
@@ -190,10 +182,10 @@ fun StatCard(label: String, value: String, progress: Float = 0f) {
             Text(text = value, style = MaterialTheme.typography.titleMedium)
             if (progress > 0f) {
                 androidx.compose.foundation.layout.Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    androidx.compose.foundation.LinearProgressIndicator(
-                        modifier = Modifier.fillMaxWidth(),
+                    androidx.compose.material3.LinearProgressIndicator(
+                        modifier = Modifier.fillMaxSize(),
                         progress = progress
                     )
                 }
@@ -206,11 +198,11 @@ fun StatCard(label: String, value: String, progress: Float = 0f) {
 fun PathChoiceButton(name: String, subtitle: String, color: androidx.compose.ui.graphics.Color, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        colors = MaterialTheme.colorScheme.primary
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
     ) {
         androidx.compose.foundation.layout.Column(
-            modifier = androidx.compose.foundation.layout.fillMaxWidth(),
-            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+            modifier = Modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = name)
             Text(text = subtitle, style = MaterialTheme.typography.bodySmall)
