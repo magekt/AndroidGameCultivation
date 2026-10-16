@@ -16,3 +16,11 @@ Key routing rules:
 - Save progress → invoke /context-save
 - Resume context → invoke /context-restore
 - Author a backlog-ready spec/issue → invoke /spec
+
+## Health Stack
+
+- typecheck: ./gradlew :core:compileDebugKotlin :app:compileDebugKotlin
+- lint: ./gradlew detekt
+- test: ./gradlew :core:jvmTest
+- deadcode: detekt --config detekt.yml
+- shell: shellcheck *.sh scripts/*.sh
