@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "strays": {
+    "allow": [
+      "gradle-wrapper.properties",
+      "gradle.properties",
+      "gradlew",
+      "gradlew.bat"
+    ]
+  },
+  "dependencies": {
+    "app/src/main/kotlin/com/gurukul/android/MainActivity.kt": [],
+    "app/src/main/kotlin/com/gurukul/android/ui/GurukulScreen.kt": [],
+    "app/src/main/kotlin/com/gurukul/android/ui/YantraCanvas.kt": [],
+    "app/src/main/kotlin/com/gurukul/android/data/ShishyaRepository.kt": [],
+    "app/src/main/AndroidManifest.xml": [],
+    "core/src/commonMain/kotlin/com/gurukul/core/math/BreakthroughMath.kt": [],
+    "core/src/commonMain/kotlin/com/gurukul/core/state/SadhanaState.kt": [],
+    "core/src/commonMain/kotlin/com/gurukul/core/state/YantraState.kt": [],
+    "core/src/commonMain/kotlin/com/gurukul/core/model/Shishya.kt": [],
+    "core/build.gradle.kts": [],
+    "app/build.gradle.kts": [],
+    "build.gradle.kts": [],
+    "settings.gradle.kts": [],
+    "gradle.properties": [],
+    "gradle-wrapper.properties": [],
+    "CLAUDE.md": [],
+    "DESIGN.md": []
+  }
+}
