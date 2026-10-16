@@ -5,26 +5,36 @@
       "gradle-wrapper.properties",
       "gradle.properties",
       "gradlew",
-      "gradlew.bat"
+      "gradlew.bat",
+      ".gstack/pregate.json",
+      "gradle/wrapper/gradle-wrapper.jar",
+      "gradle/wrapper/gradle-wrapper.properties"
     ]
   },
   "dependencies": {
+    ".gitignore": [],
+    "CLAUDE.md": [],
+    "DESIGN.md": [],
+    "app/build.gradle.kts": [],
+    "app/src/main/AndroidManifest.xml": [],
     "app/src/main/kotlin/com/gurukul/android/MainActivity.kt": [],
+    "app/src/main/kotlin/com/gurukul/android/data/ShishyaRepository.kt": [],
     "app/src/main/kotlin/com/gurukul/android/ui/GurukulScreen.kt": [],
     "app/src/main/kotlin/com/gurukul/android/ui/YantraCanvas.kt": [],
-    "app/src/main/kotlin/com/gurukul/android/data/ShishyaRepository.kt": [],
-    "app/src/main/AndroidManifest.xml": [],
+    "app/src/main/res/values/strings.xml": [],
+    "app/src/main/res/values/themes.xml": [],
+    "build.gradle.kts": [],
+    "core/build.gradle.kts": [],
     "core/src/commonMain/kotlin/com/gurukul/core/math/BreakthroughMath.kt": [],
     "core/src/commonMain/kotlin/com/gurukul/core/state/SadhanaState.kt": [],
     "core/src/commonMain/kotlin/com/gurukul/core/state/YantraState.kt": [],
     "core/src/commonMain/kotlin/com/gurukul/core/model/Shishya.kt": [],
-    "core/build.gradle.kts": [],
-    "app/build.gradle.kts": [],
-    "build.gradle.kts": [],
-    "settings.gradle.kts": [],
-    "gradle.properties": [],
     "gradle-wrapper.properties": [],
-    "CLAUDE.md": [],
-    "DESIGN.md": []
+    "gradle.properties": [],
+    "gradle/wrapper/gradle-wrapper.jar": [],
+    "gradle/wrapper/gradle-wrapper.properties": [],
+    "gradlew": [],
+    "gradlew.bat": [],
+    "settings.gradle.kts": []
   }
 }
